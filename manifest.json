@@ -1,0 +1,21 @@
+{
+  "short_name": "Past Fwd",
+  "name": "Past Forward",
+  "description": "Upload your photo and travel through time! This app uses AI to generate polaroid-style images of you reimagined in the iconic styles of different decades.",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#facc15",
+  "background_color": "#000000"
+}
