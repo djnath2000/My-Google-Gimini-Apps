@@ -5,13 +5,11 @@
 import { GoogleGenAI } from "@google/genai";
 import type { GenerateContentResponse } from "@google/genai";
 
+// This can be undefined in a browser environment; we'll handle it gracefully.
 const API_KEY = process.env.API_KEY;
 
-if (!API_KEY) {
-  throw new Error("API_KEY environment variable is not set");
-}
-
-const ai = new GoogleGenAI({ apiKey: API_KEY });
+// Conditionally initialize the AI client only if the API key is present.
+const ai = API_KEY ? new GoogleGenAI({ apiKey: API_KEY }) : null;
 
 
 // --- Helper Functions ---
@@ -65,7 +63,8 @@ async function callGeminiWithRetry(imagePart: object, textPart: object): Promise
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
-            return await ai.models.generateContent({
+            // The `ai` check is implicitly handled before this function is called.
+            return await ai!.models.generateContent({
                 model: 'gemini-2.5-flash-image-preview',
                 contents: { parts: [imagePart, textPart] },
             });
@@ -96,6 +95,11 @@ async function callGeminiWithRetry(imagePart: object, textPart: object): Promise
  * @returns A promise that resolves to a base64-encoded image data URL of the generated image.
  */
 export async function generateDecadeImage(imageDataUrl: string, prompt: string): Promise<string> {
+  // Gracefully fail if the API key is not configured, preventing a crash.
+  if (!ai) {
+    throw new Error("API Key not configured. The app can't connect to the AI service.");
+  }
+
   const match = imageDataUrl.match(/^data:(image\/\w+);base64,(.*)$/);
   if (!match) {
     throw new Error("Invalid image data URL format. Expected 'data:image/...;base64,...'");
