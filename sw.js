@@ -4,9 +4,9 @@
 */
 const CACHE_NAME = 'past-forward-v1';
 const URLS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/index.css',
+  '.',
+  './index.html',
+  './index.css',
 ];
 
 // Install event: opens a cache and adds the app shell files to it.
